@@ -15,7 +15,7 @@ class AppTheme {
       onSecondary: Colors.black,
       tertiary: const Color(0xFFFF8A65),
       surface: Colors.white,
-      background: const Color(0xFFF8F8F8),
+      surfaceContainerLowest: const Color(0xFFF8F8F8),
     ),
     textTheme: TextTheme(
       displayLarge: GoogleFonts.montserrat(
@@ -62,7 +62,7 @@ class AppTheme {
       onSecondary: Colors.black,
       tertiary: const Color(0xFFFF8A65),
       surface: const Color(0xFF121212),
-      background: const Color(0xFF121212),
+      surfaceContainerLowest: const Color(0xFF121212),
     ),
     textTheme: TextTheme(
       displayLarge: GoogleFonts.montserrat(

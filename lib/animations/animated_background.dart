@@ -69,11 +69,7 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
             animation: _pulseAnimation,
             builder: (context, child) {
               // Calculate gradient position based on mouse movement
-              final double dx =
-                  (_mousePosition.dx / size.width) * widget.sensitivity;
-              final double dy =
-                  (_mousePosition.dy / size.height) * widget.sensitivity;
-
+              // Gradient center adjusts based on mouse position
               return Container(
                 width: double.infinity,
                 height: double.infinity,

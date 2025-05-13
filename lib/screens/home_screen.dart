@@ -239,7 +239,7 @@ class SectionContainer extends StatelessWidget {
             const Condition.largerThan(name: MOBILE, value: 48.0),
             const Condition.largerThan(name: TABLET, value: 80.0),
           ],
-        ).value!,
+        ).value,
         vertical: 48.0,
       ),
       child: child,

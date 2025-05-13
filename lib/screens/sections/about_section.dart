@@ -14,9 +14,7 @@ class AboutSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final isDesktop = ResponsiveBreakpoints.of(context).largerThan(TABLET);
-    final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
