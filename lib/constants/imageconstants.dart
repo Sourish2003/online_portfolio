@@ -5,9 +5,9 @@ class ImageConstants {
       "assets/images/profile_alt_placeholder.png";
 
   // Project images
-  static const String project1 = "assets/images/project1_placeholder.png";
-  static const String project2 = "assets/images/project2_placeholder.png";
-  static const String project3 = "assets/images/project3_placeholder.png";
+  static const String project1 = "assets/images/project1_placeholder.jpeg";
+  static const String project2 = "assets/images/project2_placeholder.jpeg";
+  static const String project3 = "assets/images/project3_placeholder.jpeg";
 
   // Background images
   static const String backgroundImage =

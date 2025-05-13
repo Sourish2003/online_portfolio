@@ -138,12 +138,15 @@ class _AnimatedRevealItemsState extends State<AnimatedRevealItems>
   }
 
   Animation<double> _createAnimation(Duration delay) {
+    // Ensure weight is always positive
+    final delayWeight = delay.inMilliseconds > 0 ? delay.inMilliseconds / 1000 : 0.01;
+    
     return TweenSequence<double>([
       TweenSequenceItem(
         tween: Tween<double>(begin: 0.0, end: 0.0).chain(
           CurveTween(curve: Curves.easeInOut),
         ),
-        weight: delay.inMilliseconds / 1000,
+        weight: delayWeight,
       ),
       TweenSequenceItem(
         tween: Tween<double>(begin: 0.0, end: 1.0).chain(
@@ -158,13 +161,16 @@ class _AnimatedRevealItemsState extends State<AnimatedRevealItems>
   }
 
   Animation<Offset> _createSlideAnimation(Duration delay) {
+    // Ensure weight is always positive
+    final delayWeight = delay.inMilliseconds > 0 ? delay.inMilliseconds / 1000 : 0.01;
+    
     return TweenSequence<Offset>([
       TweenSequenceItem(
         tween: Tween<Offset>(
           begin: const Offset(0.0, 0.5),
           end: const Offset(0.0, 0.5),
         ).chain(CurveTween(curve: Curves.easeInOut)),
-        weight: delay.inMilliseconds / 1000,
+        weight: delayWeight,
       ),
       TweenSequenceItem(
         tween: Tween<Offset>(
