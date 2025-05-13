@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:glassmorphism/glassmorphism.dart';
+import 'dart:ui';
 
 class AnimatedContainerCard extends StatefulWidget {
   final Widget child;
@@ -43,23 +43,19 @@ class _AnimatedContainerCardState extends State<AnimatedContainerCard> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final Color background = widget.backgroundColor ??
-        theme.colorScheme.surface.withValues(alpha: 0.2);
+        theme.colorScheme.surface.withOpacity(0.2);
 
     return MouseRegion(
-      onEnter: widget.enableHover
-          ? (_) {
-              setState(() {
-                _isHovering = true;
-              });
-            }
-          : null,
-      onExit: widget.enableHover
-          ? (_) {
-              setState(() {
-                _isHovering = false;
-              });
-            }
-          : null,
+      onEnter: widget.enableHover ? (_) {
+        setState(() {
+          _isHovering = true;
+        });
+      } : null,
+      onExit: widget.enableHover ? (_) {
+        setState(() {
+          _isHovering = false;
+        });
+      } : null,
       child: GestureDetector(
         onTap: widget.onTap,
         child: AnimatedContainer(
@@ -68,32 +64,38 @@ class _AnimatedContainerCardState extends State<AnimatedContainerCard> {
           margin: widget.margin,
           transform: Matrix4.identity()
             ..translate(0.0, _isHovering ? -8.0 : 0.0, 0.0),
-          child: GlassmorphicContainer(
-            width: widget.width,
-            height: widget.height ?? 200,
-            borderRadius: widget.borderRadius,
-            blur: widget.blur,
-            alignment: Alignment.center,
-            border: 1.5,
-            linearGradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                background.withValues(alpha: 0.1),
-                background.withValues(alpha: 0.2),
-              ],
-            ),
-            borderGradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                widget.borderColor.withValues(alpha: _isHovering ? 0.8 : 0.3),
-                widget.borderColor.withValues(alpha: _isHovering ? 0.6 : 0.2),
-              ],
-            ),
-            child: Padding(
-              padding: widget.padding!,
-              child: widget.child,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(widget.borderRadius),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(
+                sigmaX: widget.blur,
+                sigmaY: widget.blur,
+              ),
+              child: Container(
+                width: widget.width,
+                height: widget.height,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(widget.borderRadius),
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      background.withOpacity(0.1),
+                      background.withOpacity(0.2),
+                    ],
+                  ),
+                  border: Border.all(
+                    width: 1.5,
+                    color: widget.borderColor.withOpacity(_isHovering ? 0.8 : 0.3),
+                  ),
+                ),
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: widget.padding!,
+                    child: widget.child,
+                  ),
+                ),
+              ),
             ),
           ),
         ),

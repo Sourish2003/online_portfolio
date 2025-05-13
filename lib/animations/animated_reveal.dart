@@ -109,6 +109,18 @@ class AnimatedRevealItems extends StatefulWidget {
 
 class _AnimatedRevealItemsState extends State<AnimatedRevealItems>
     with TickerProviderStateMixin {
+  // List to keep track of all animation controllers
+  final List<AnimationController> _controllers = [];
+
+  @override
+  void dispose() {
+    // Dispose all animation controllers
+    for (final controller in _controllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -141,6 +153,16 @@ class _AnimatedRevealItemsState extends State<AnimatedRevealItems>
     // Ensure weight is always positive
     final delayWeight = delay.inMilliseconds > 0 ? delay.inMilliseconds / 1000 : 0.01;
     
+    final controller = AnimationController(
+      vsync: this,
+      duration: delay + const Duration(milliseconds: 800),
+    );
+    
+    // Add controller to the list for disposal later
+    _controllers.add(controller);
+    
+    controller.forward();
+    
     return TweenSequence<double>([
       TweenSequenceItem(
         tween: Tween<double>(begin: 0.0, end: 0.0).chain(
@@ -154,15 +176,22 @@ class _AnimatedRevealItemsState extends State<AnimatedRevealItems>
         ),
         weight: 1.0,
       ),
-    ]).animate(AnimationController(
-      vsync: this,
-      duration: delay + const Duration(milliseconds: 800),
-    )..forward());
+    ]).animate(controller);
   }
 
   Animation<Offset> _createSlideAnimation(Duration delay) {
     // Ensure weight is always positive
     final delayWeight = delay.inMilliseconds > 0 ? delay.inMilliseconds / 1000 : 0.01;
+    
+    final controller = AnimationController(
+      vsync: this,
+      duration: delay + const Duration(milliseconds: 800),
+    );
+    
+    // Add controller to the list for disposal later
+    _controllers.add(controller);
+    
+    controller.forward();
     
     return TweenSequence<Offset>([
       TweenSequenceItem(
@@ -179,9 +208,6 @@ class _AnimatedRevealItemsState extends State<AnimatedRevealItems>
         ).chain(CurveTween(curve: Curves.easeOutQuint)),
         weight: 1.0,
       ),
-    ]).animate(AnimationController(
-      vsync: this,
-      duration: delay + const Duration(milliseconds: 800),
-    )..forward());
+    ]).animate(controller);
   }
 }

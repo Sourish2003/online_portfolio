@@ -228,8 +228,9 @@ class SectionContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(
-        minHeight: 500,
+      constraints: BoxConstraints.tightForFinite(
+        width: double.infinity,
+        height: double.infinity,
       ),
       padding: EdgeInsets.symmetric(
         horizontal: ResponsiveValue<double>(

@@ -364,31 +364,33 @@ class _ProjectCardState extends State<ProjectCard> {
             // Project Details
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.project.title,
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.project.title,
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    widget.project.description,
-                    style: theme.textTheme.bodyMedium,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 16),
-                  Wrap(
-                    spacing: 8.0,
-                    runSpacing: 8.0,
-                    children: widget.project.tags
-                        .map((tag) => TechChip(label: tag, isSmall: true))
-                        .toList(),
-                  ),
-                ],
+                    const SizedBox(height: 8),
+                    Text(
+                      widget.project.description,
+                      style: theme.textTheme.bodyMedium,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 16),
+                    Wrap(
+                      spacing: 8.0,
+                      runSpacing: 8.0,
+                      children: widget.project.tags.map((tag) => 
+                        TechChip(label: tag, isSmall: true)
+                      ).toList(),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

@@ -18,11 +18,17 @@ class ContactSection extends StatefulWidget {
 }
 
 class _ContactSectionState extends State<ContactSection> {
-  final _formKey = GlobalKey<FormState>();
+  late final GlobalKey<FormState> _formKey;
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _messageController = TextEditingController();
   bool _isSubmitting = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _formKey = GlobalKey<FormState>();
+  }
 
   @override
   void dispose() {
