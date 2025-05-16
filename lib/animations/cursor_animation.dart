@@ -25,52 +25,73 @@ class _CursorAnimationState extends State<CursorAnimation> {
   bool _isMouseInside = false;
   bool _isHovering = false;
 
+  // Track if the user is actively scrolling
+  bool _isScrolling = false;
+
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) {
+    return Listener(
+      // Add a listener to detect scroll events
+      onPointerSignal: (event) {
         setState(() {
-          _isMouseInside = true;
+          _isScrolling = true;
+          // Reset the scrolling state after a delay
+          Future.delayed(const Duration(milliseconds: 200), () {
+            if (mounted) {
+              setState(() {
+                _isScrolling = false;
+              });
+            }
+          });
         });
       },
-      onExit: (_) {
-        setState(() {
-          _isMouseInside = false;
-          _isHovering = false;
-        });
-      },
-      onHover: (event) {
-        setState(() {
-          _mousePosition = event.localPosition;
-        });
-      },
-      child: Stack(
-        children: [
-          widget.child,
-          if (_isMouseInside)
-            Positioned(
-              left: _mousePosition.dx - widget.size / 2,
-              top: _mousePosition.dy - widget.size / 2,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                width: widget.size,
-                height: widget.size,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: _isHovering ? widget.hoverColor : widget.defaultColor,
-                  boxShadow: [
-                    BoxShadow(
-                      color: _isHovering
-                          ? widget.hoverColor.withValues(alpha: 0.5)
-                          : widget.defaultColor.withValues(alpha: 0.5),
-                      blurRadius: widget.blurRadius,
-                      spreadRadius: widget.size / 4,
+      child: MouseRegion(
+        onEnter: (_) {
+          setState(() {
+            _isMouseInside = true;
+          });
+        },
+        onExit: (_) {
+          setState(() {
+            _isMouseInside = false;
+            _isHovering = false;
+          });
+        },
+        onHover: (event) {
+          setState(() {
+            _mousePosition = event.localPosition;
+          });
+        },
+        child: Stack(
+          children: [
+            widget.child,
+            if (_isMouseInside && !_isScrolling) // Only show the custom cursor when not scrolling
+              Positioned(
+                left: _mousePosition.dx - widget.size / 2,
+                top: _mousePosition.dy - widget.size / 2,
+                child: IgnorePointer( // Make sure this doesn't interfere with scroll events
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    width: widget.size,
+                    height: widget.size,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: _isHovering ? widget.hoverColor : widget.defaultColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: _isHovering
+                              ? widget.hoverColor.withValues(alpha: 0.5)
+                              : widget.defaultColor.withValues(alpha: 0.5),
+                          blurRadius: widget.blurRadius,
+                          spreadRadius: widget.size / 4,
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }
