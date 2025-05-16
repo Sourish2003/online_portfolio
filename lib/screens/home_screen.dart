@@ -3,12 +3,23 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:online_portfolio/animations/animated_background.dart';
 import 'package:online_portfolio/animations/cursor_animation.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../widgets/section_divider.dart';
 import 'sections/about_section.dart';
 import 'sections/contact_section.dart';
 import 'sections/hero_section.dart';
 import 'sections/projects_section.dart';
+
+// Utility function to launch URLs
+void launchURL(String url) async {
+  try {
+    final Uri uri = Uri.parse(url);
+    await launchUrl(uri);
+  } catch (e) {
+    debugPrint('Could not launch $url: $e');
+  }
+}
 
 class HomeScreen extends StatefulWidget {
   final Function toggleTheme;
@@ -36,6 +47,9 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _scrollController.addListener(_scrollListener);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _updateCurrentSectionFromScroll();
+    });
   }
 
   @override
@@ -49,7 +63,10 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _showScrollToTop = _scrollController.offset > 300;
     });
+    _updateCurrentSectionFromScroll();
+  }
 
+  void _updateCurrentSectionFromScroll() {
     // Update current section based on scroll position
     for (int i = _sectionKeys.length - 1; i >= 0; i--) {
       final key = _sectionKeys[i];
@@ -71,16 +88,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _scrollToSection(int index) {
     if (_sectionKeys[index].currentContext != null) {
-      final RenderBox box =
-          _sectionKeys[index].currentContext!.findRenderObject() as RenderBox;
-      final position = box.localToGlobal(Offset.zero).dy;
-      final offset = _scrollController.offset + position - 80;
-
-      _scrollController.animateTo(
-        offset,
-        duration: const Duration(milliseconds: 500),
+      Scrollable.ensureVisible(
+        _sectionKeys[index].currentContext!,
+        duration: const Duration(milliseconds: 800),
         curve: Curves.easeInOut,
+        alignment: 0.0,
       );
+      
+      setState(() {
+        _currentSection = index;
+      });
     }
   }
 
@@ -332,22 +349,22 @@ class FooterSection extends StatelessWidget {
             children: [
               SocialIcon(
                 icon: FontAwesomeIcons.github,
-                onTap: () {},
+                onTap: () => launchURL('https://github.com/yourusername'),
                 isDarkMode: isDarkMode,
               ),
               SocialIcon(
                 icon: FontAwesomeIcons.linkedin,
-                onTap: () {},
+                onTap: () => launchURL('https://linkedin.com/in/yourprofile'),
                 isDarkMode: isDarkMode,
               ),
               SocialIcon(
                 icon: FontAwesomeIcons.envelope,
-                onTap: () {},
+                onTap: () => launchURL('mailto:your.email@example.com'),
                 isDarkMode: isDarkMode,
               ),
               SocialIcon(
                 icon: FontAwesomeIcons.twitter,
-                onTap: () {},
+                onTap: () => launchURL('https://twitter.com/yourusername'),
                 isDarkMode: isDarkMode,
               ),
             ],
