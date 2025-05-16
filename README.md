@@ -118,14 +118,40 @@ flutter build linux --release
 ## 📝 Project Structure
 
 ```
-lib/
-├── animations/        # Custom animations
-├── constants/         # App constants
-├── screens/           # Main screens
-│   └── sections/      # Portfolio sections
-├── themes/            # Theme configuration
-├── widgets/           # Reusable widgets
-└── main.dart          # App entry point
+flutter_portfolio/
+├── assets/                    # Static assets for the app
+│   ├── fonts/                 # Custom font files
+│   ├── icons/                 # Icon assets
+│   └── images/                # Image assets
+├── lib/                       # Main source code
+│   ├── animations/            # Custom animations
+│   │   ├── animated_background.dart
+│   │   ├── animated_reveal.dart
+│   │   └── cursor_animation.dart
+│   ├── constants/             # App constants
+│   │   └── imageconstants.dart
+│   ├── screens/               # Main screens
+│   │   ├── home_screen.dart
+│   │   └── sections/          # Portfolio sections
+│   │       ├── about_section.dart
+│   │       ├── contact_section.dart
+│   │       ├── hero_section.dart
+│   │       └── projects_section.dart
+│   ├── themes/                # Theme configuration
+│   │   └── themes.dart
+│   ├── widgets/               # Reusable widgets
+│   │   ├── animated_container_card.dart
+│   │   └── section_divider.dart
+│   └── main.dart              # App entry point
+│
+├── test/                      # Test files
+│   └── widget_test.dart       # Widget testing
+│
+├── web/                       # Web-specific files
+│
+├── pubspec.yaml               # Dependencies and assets configuration
+├── README.md                  # Project documentation
+└── analysis_options.yaml      # Dart analysis settings
 ```
 
 ## 🔧 Performance Optimizations
