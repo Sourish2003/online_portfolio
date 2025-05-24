@@ -120,7 +120,7 @@ class HeroSection extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'John Doe',
+                        'Sourish Merugumilli',
                         style: theme.textTheme.displayLarge,
                       ),
                       const SizedBox(height: 16),
