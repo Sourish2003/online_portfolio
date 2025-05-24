@@ -70,21 +70,23 @@ class _AnimatedRevealTextState extends State<AnimatedRevealText>
       return const SizedBox.shrink();
     }
 
-    return AnimatedBuilder(
-      animation: _animation,
-      builder: (context, child) {
-        return ClipRect(
-          child: Align(
-            alignment: Alignment.centerLeft,
-            widthFactor: _animation.value,
-            child: Text(
-              widget.text,
-              style: widget.style,
-              textAlign: widget.textAlign,
+    return RepaintBoundary(
+      child: AnimatedBuilder(
+        animation: _animation,
+        builder: (context, child) {
+          return ClipRect(
+            child: Align(
+              alignment: Alignment.centerLeft,
+              widthFactor: _animation.value,
+              child: Text(
+                widget.text,
+                style: widget.style,
+                textAlign: widget.textAlign,
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
@@ -123,28 +125,30 @@ class _AnimatedRevealItemsState extends State<AnimatedRevealItems>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: widget.mainAxisAlignment,
-      crossAxisAlignment: widget.crossAxisAlignment,
-      children: List.generate(
-        widget.children.length,
-        (index) {
-          final child = widget.children[index];
-          final delay = Duration(
-            milliseconds: widget.staggerDelay.inMilliseconds * index,
-          );
+    return RepaintBoundary(
+      child: Column(
+        mainAxisAlignment: widget.mainAxisAlignment,
+        crossAxisAlignment: widget.crossAxisAlignment,
+        children: List.generate(
+          widget.children.length,
+          (index) {
+            final child = widget.children[index];
+            final delay = Duration(
+              milliseconds: widget.staggerDelay.inMilliseconds * index,
+            );
 
-          return FadeTransition(
-            opacity: _createAnimation(delay),
-            child: SlideTransition(
-              position: _createSlideAnimation(delay),
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
-                child: child,
+            return FadeTransition(
+              opacity: _createAnimation(delay),
+              child: SlideTransition(
+                position: _createSlideAnimation(delay),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: child,
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

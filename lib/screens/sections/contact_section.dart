@@ -81,13 +81,14 @@ class _ContactSectionState extends State<ContactSection> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SectionDivider(title: 'Contact Me'),
+        SectionDivider(title: 'Contact Me', color: Theme.of(context).textTheme.headlineMedium?.color),
         const SizedBox(height: 40),
 
         Text(
           'Get In Touch',
           style: theme.textTheme.headlineMedium?.copyWith(
             fontWeight: FontWeight.bold,
+            color: theme.textTheme.headlineMedium?.color,
           ),
         ),
         const SizedBox(height: 8),
@@ -291,6 +292,7 @@ class _ContactSectionState extends State<ContactSection> {
                 'Contact Information',
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
+                  color: theme.textTheme.titleLarge?.color,
                 ),
               ),
               const SizedBox(height: 24),
@@ -326,6 +328,7 @@ class _ContactSectionState extends State<ContactSection> {
                 'Follow Me',
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
+                  color: theme.textTheme.titleLarge?.color,
                 ),
               ),
               const SizedBox(height: 24),

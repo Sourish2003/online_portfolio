@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'dart:ui';
 
 class AnimatedContainerCard extends StatefulWidget {
@@ -45,54 +44,65 @@ class _AnimatedContainerCardState extends State<AnimatedContainerCard> {
     final Color background = widget.backgroundColor ??
         theme.colorScheme.surface.withOpacity(0.2);
 
-    return MouseRegion(
-      onEnter: widget.enableHover ? (_) {
-        setState(() {
-          _isHovering = true;
-        });
-      } : null,
-      onExit: widget.enableHover ? (_) {
-        setState(() {
-          _isHovering = false;
-        });
-      } : null,
-      child: GestureDetector(
-        onTap: widget.onTap,
-        child: AnimatedContainer(
-          duration: 350.milliseconds,
-          curve: Curves.easeOutQuint,
-          margin: widget.margin,
-          transform: Matrix4.identity()
-            ..translate(0.0, _isHovering ? -8.0 : 0.0, 0.0),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(widget.borderRadius),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: widget.blur,
-                sigmaY: widget.blur,
-              ),
-              child: Container(
-                width: widget.width,
-                height: widget.height,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(widget.borderRadius),
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      background.withOpacity(0.1),
-                      background.withOpacity(0.2),
-                    ],
-                  ),
-                  border: Border.all(
-                    width: 1.5,
-                    color: widget.borderColor.withOpacity(_isHovering ? 0.8 : 0.3),
-                  ),
+    return RepaintBoundary(
+      child: MouseRegion(
+        onEnter: widget.enableHover ? (_) {
+          setState(() {
+            _isHovering = true;
+          });
+        } : null,
+        onExit: widget.enableHover ? (_) {
+          setState(() {
+            _isHovering = false;
+          });
+        } : null,
+        child: GestureDetector(
+          onTap: widget.onTap,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeOutQuint,
+            margin: widget.margin,
+            transform: Matrix4.identity()
+              ..translate(0.0, _isHovering ? -6.0 : 0.0, 0.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(widget.borderRadius),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: widget.blur > 8 ? 8 : widget.blur,
+                  sigmaY: widget.blur > 8 ? 8 : widget.blur,
                 ),
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: widget.padding!,
-                    child: widget.child,
+                child: Container(
+                  width: widget.width,
+                  height: widget.height,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(widget.borderRadius),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        background.withOpacity(0.1),
+                        background.withOpacity(0.18),
+                      ],
+                    ),
+                    border: Border.all(
+                      width: 1.2,
+                      color: widget.borderColor.withOpacity(_isHovering ? 0.7 : 0.25),
+                    ),
+                    boxShadow: _isHovering
+                        ? [
+                            BoxShadow(
+                              color: theme.colorScheme.primary.withOpacity(0.08),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
+                            ),
+                          ]
+                        : [],
+                  ),
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: widget.padding!,
+                      child: widget.child,
+                    ),
                   ),
                 ),
               ),

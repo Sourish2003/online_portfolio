@@ -4,7 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 class SectionDivider extends StatelessWidget {
   final String title;
   final double width;
-  final Color color;
+  final Color? color;
   final TextStyle? titleStyle;
   final bool isScrollable;
   final Duration animationDelay;
@@ -13,7 +13,7 @@ class SectionDivider extends StatelessWidget {
     super.key,
     required this.title,
     this.width = double.infinity,
-    this.color = Colors.white,
+    this.color,
     this.titleStyle,
     this.isScrollable = true,
     this.animationDelay = Duration.zero,
@@ -24,7 +24,7 @@ class SectionDivider extends StatelessWidget {
     final theme = Theme.of(context);
     final style = titleStyle ??
         theme.textTheme.headlineMedium?.copyWith(
-          color: color,
+          color: color ?? theme.textTheme.headlineMedium?.color,
           fontWeight: FontWeight.bold,
         );
 
@@ -36,8 +36,8 @@ class SectionDivider extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  color.withValues(alpha: 0.1),
-                  color.withValues(alpha: 0.8),
+                  (color ?? theme.textTheme.headlineMedium?.color)?.withOpacity(0.1) ?? Colors.black,
+                  (color ?? theme.textTheme.headlineMedium?.color)?.withOpacity(0.8) ?? Colors.black,
                 ],
               ),
             ),
@@ -56,8 +56,8 @@ class SectionDivider extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  color.withValues(alpha: 0.8),
-                  color.withValues(alpha: 0.1),
+                  (color ?? theme.textTheme.headlineMedium?.color)?.withOpacity(0.8) ?? Colors.black,
+                  (color ?? theme.textTheme.headlineMedium?.color)?.withOpacity(0.1) ?? Colors.black,
                 ],
               ),
             ),

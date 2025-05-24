@@ -20,13 +20,14 @@ class ProjectsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SectionDivider(title: 'Projects'),
+        SectionDivider(title: 'Projects', color: Theme.of(context).textTheme.headlineMedium?.color),
         const SizedBox(height: 40),
 
         Text(
           'Some of my recent work',
           style: theme.textTheme.headlineMedium?.copyWith(
             fontWeight: FontWeight.bold,
+            color: theme.textTheme.headlineMedium?.color,
           ),
         ),
         const SizedBox(height: 8),
@@ -148,6 +149,7 @@ class FeaturedProject extends StatelessWidget {
           'Mobile E-Commerce App',
           style: theme.textTheme.headlineMedium?.copyWith(
             fontWeight: FontWeight.bold,
+            color: theme.textTheme.headlineMedium?.color,
           ),
         ),
         const SizedBox(height: 16),

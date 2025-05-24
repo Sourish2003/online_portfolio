@@ -19,7 +19,7 @@ class AboutSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SectionDivider(title: 'About Me'),
+        SectionDivider(title: 'About Me', color: Theme.of(context).textTheme.headlineMedium?.color),
         const SizedBox(height: 40),
 
         // Bio and Skills in a Row/Column based on screen size
@@ -112,6 +112,7 @@ class AboutSection extends StatelessWidget {
             'My Skills',
             style: theme.textTheme.headlineMedium?.copyWith(
               fontWeight: FontWeight.bold,
+              color: theme.textTheme.headlineMedium?.color,
             ),
           ),
           const SizedBox(height: 24),
@@ -177,6 +178,7 @@ class AboutSection extends StatelessWidget {
           'Experience & Education',
           style: theme.textTheme.headlineMedium?.copyWith(
             fontWeight: FontWeight.bold,
+            color: theme.textTheme.headlineMedium?.color,
           ),
         ),
         const SizedBox(height: 24),
@@ -328,6 +330,7 @@ class AboutSection extends StatelessWidget {
           style: theme.textTheme.headlineMedium?.copyWith(
             fontSize: 22,
             fontWeight: FontWeight.bold,
+            color: theme.textTheme.headlineMedium?.color,
           ),
         ),
         const SizedBox(height: 24),

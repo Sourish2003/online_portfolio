@@ -71,15 +71,30 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _updateCurrentSectionFromScroll() {
-    // Update current section based on scroll position - optimized version
-    for (int i = _sectionKeys.length - 1; i >= 0; i--) {
-      if (!_sectionKeys[i].currentContext.toString().contains('null')) {
-        final RenderBox box =
-        _sectionKeys[i].currentContext!.findRenderObject() as RenderBox;
-        final position = box.localToGlobal(Offset.zero);
+    // Get the scrollable area height and current scroll position
+    final scrollBox = context.findRenderObject() as RenderBox?;
+    final scrollHeight = scrollBox?.size.height ?? 0;
+    final scrollOffset = _scrollController.offset;
+    final maxScrollExtent = _scrollController.position.maxScrollExtent;
 
-        // We check if the section is close to the top of the screen
-        if (position.dy <= 100) {
+    // If at the very bottom, set to last section
+    if ((scrollOffset + 10) >= maxScrollExtent) {
+      if (_currentSection != _sectionKeys.length - 1) {
+        setState(() {
+          _currentSection = _sectionKeys.length - 1;
+        });
+      }
+      return;
+    }
+
+    // Otherwise, check which section is closest to the top
+    for (int i = _sectionKeys.length - 1; i >= 0; i--) {
+      final ctx = _sectionKeys[i].currentContext;
+      if (ctx != null) {
+        final RenderBox box = ctx.findRenderObject() as RenderBox;
+        final position = box.localToGlobal(Offset.zero);
+        // If the section is within 100px from the top, or if it's the last section and mostly visible
+        if (position.dy <= 100 || (i == _sectionKeys.length - 1 && position.dy < scrollHeight - 200)) {
           if (_currentSection != i) {
             setState(() {
               _currentSection = i;
@@ -204,7 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
             radius: const Radius.circular(4.0),
             child: SingleChildScrollView(
               controller: _scrollController,
-              physics: const AlwaysScrollableScrollPhysics(), // Ensure scrolling is always enabled
+              physics: const ClampingScrollPhysics(), // Smooth scrolling
               child: Column(
                 children: [
                   // Hero Section

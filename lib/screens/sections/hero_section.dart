@@ -117,11 +117,14 @@ class HeroSection extends StatelessWidget {
                         'Hello, I\'m',
                         style: theme.textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
+                          color: theme.textTheme.headlineMedium?.color,
                         ),
                       ),
                       Text(
                         'Sourish Merugumilli',
-                        style: theme.textTheme.displayLarge,
+                        style: theme.textTheme.displayLarge?.copyWith(
+                          color: theme.textTheme.displayLarge?.color,
+                        ),
                       ),
                       const SizedBox(height: 16),
                       Row(
