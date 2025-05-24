@@ -133,8 +133,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDesktop = ResponsiveBreakpoints.of(context).largerThan(TABLET);
-    final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth <= 460; // Adjusted from 450 to 460
+    final isTabletOrDesktop = screenWidth > 460; // Show top bar for screens wider than 460px
 
     return CursorAnimation(
       defaultColor: theme.colorScheme.primary.withValues(alpha: 0.3),
@@ -158,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
-            title: isDesktop
+            title: isTabletOrDesktop // Show navigation bar for screens wider than 460px
                 ? Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(
@@ -182,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(width: 16),
             ],
           ),
-          drawer: isMobile
+          drawer: isMobile // Only show drawer for screens 460px and below
               ? Drawer(
             child: ListView(
               padding: EdgeInsets.zero,
@@ -202,6 +203,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   _sections.length,
                       (index) => ListTile(
                     title: Text(_sections[index]),
+                    selected: _currentSection == index,
+                    selectedTileColor: theme.colorScheme.primary.withValues(alpha: 0.1),
                     onTap: () {
                       Navigator.pop(context);
                       _scrollToSection(index);

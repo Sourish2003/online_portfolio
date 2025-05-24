@@ -59,141 +59,176 @@ class HeroSection extends StatelessWidget {
 
     return SimpleParallax(
       depth: 0.03, // Adjust this value to control parallax sensitivity
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.9,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            if (isDesktop) ...[
-              // Left Column with Image for desktop only
-              Expanded(
-                flex: 1,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 40.0),
-                  child: AnimatedOpacity(
-                    duration: const Duration(seconds: 1),
-                    opacity: 1.0,
-                    child: Transform.translate(
-                      offset: const Offset(0, 0),
-                      child: Container(
-                        height: 400,
-                        width: 400,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: theme.colorScheme.primary
-                                  .withValues(alpha: 0.3),
-                              blurRadius: 40.0,
-                              spreadRadius: 10.0,
-                            ),
-                          ],
-                          image: const DecorationImage(
-                            image: AssetImage(
-                                'assets/images/profile_placeholder.png'),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+      child: Container(
+        constraints: BoxConstraints(
+          minHeight: MediaQuery.of(context).size.height * 0.9,
+        ),
+        child: isDesktop
+            ? _buildDesktopLayout(context, theme, isMobile)
+            : _buildMobileLayout(context, theme, isMobile),
+      ),
+    );
+  }
+
+  Widget _buildDesktopLayout(BuildContext context, ThemeData theme, bool isMobile) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        // Left Column with Image for desktop
+        Expanded(
+          flex: 1,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 40.0),
+            child: _buildProfileImage(theme, 400.0),
+          ),
+        ),
+
+        // Right Column with Text
+        Expanded(
+          flex: 1,
+          child: _buildTextContent(context, theme, isMobile),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMobileLayout(BuildContext context, ThemeData theme, bool isMobile) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        // Profile Image at the top for mobile
+        Padding(
+          padding: const EdgeInsets.only(bottom: 40.0),
+          child: _buildProfileImage(theme, 280.0),
+        ),
+
+        // Text Content below the image
+        _buildTextContent(context, theme, isMobile, isColumn: true),
+      ],
+    );
+  }
+
+  Widget _buildProfileImage(ThemeData theme, double size) {
+    return AnimatedOpacity(
+      duration: const Duration(seconds: 1),
+      opacity: 1.0,
+      child: Transform.translate(
+        offset: const Offset(0, 0),
+        child: Container(
+          height: size,
+          width: size,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                blurRadius: 40.0,
+                spreadRadius: 10.0,
               ),
             ],
+            image: const DecorationImage(
+              image: AssetImage('assets/images/profile_placeholder.png'),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
-            // Right Column with Text
-            Expanded(
-              flex: isDesktop ? 1 : 2,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AnimatedRevealItems(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    staggerDelay: const Duration(milliseconds: 250),
-                    children: [
-                      Text(
-                        'Hello, I\'m',
-                        style: theme.textTheme.headlineMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: theme.textTheme.headlineMedium?.color,
-                        ),
+  Widget _buildTextContent(BuildContext context, ThemeData theme, bool isMobile, {bool isColumn = false}) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: isColumn ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+      children: [
+        AnimatedRevealItems(
+          crossAxisAlignment: isColumn ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+          staggerDelay: const Duration(milliseconds: 250),
+          children: [
+            Text(
+              'Hello, I\'m',
+              style: theme.textTheme.headlineMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: theme.textTheme.headlineMedium?.color,
+              ),
+              textAlign: isColumn ? TextAlign.center : TextAlign.start,
+            ),
+            Text(
+              'Sourish Merugumilli',
+              style: theme.textTheme.displayLarge?.copyWith(
+                color: theme.textTheme.displayLarge?.color,
+                fontSize: isMobile ? 36 : null, // Smaller font size for mobile
+              ),
+              textAlign: isColumn ? TextAlign.center : TextAlign.start,
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: isColumn ? MainAxisAlignment.center : MainAxisAlignment.start,
+              children: [
+                Text(
+                  'I\'m a ',
+                  style: theme.textTheme.headlineMedium,
+                ),
+                DefaultTextStyle(
+                  style: theme.textTheme.headlineMedium!.copyWith(
+                    color: theme.colorScheme.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  child: AnimatedTextKit(
+                    repeatForever: true,
+                    animatedTexts: [
+                      TypewriterAnimatedText(
+                        'Software Developer',
+                        speed: const Duration(milliseconds: 100),
                       ),
-                      Text(
-                        'Sourish Merugumilli',
-                        style: theme.textTheme.displayLarge?.copyWith(
-                          color: theme.textTheme.displayLarge?.color,
-                        ),
+                      TypewriterAnimatedText(
+                        'Web Designer',
+                        speed: const Duration(milliseconds: 100),
                       ),
-                      const SizedBox(height: 16),
-                      Row(
-                        children: [
-                          Text(
-                            'I\'m a ',
-                            style: theme.textTheme.headlineMedium,
-                          ),
-                          DefaultTextStyle(
-                            style: theme.textTheme.headlineMedium!.copyWith(
-                              color: theme.colorScheme.primary,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            child: AnimatedTextKit(
-                              repeatForever: true,
-                              animatedTexts: [
-                                TypewriterAnimatedText(
-                                  'Software Developer',
-                                  speed: const Duration(milliseconds: 100),
-                                ),
-                                TypewriterAnimatedText(
-                                  'Web Designer',
-                                  speed: const Duration(milliseconds: 100),
-                                ),
-                                TypewriterAnimatedText(
-                                  'Mobile Developer',
-                                  speed: const Duration(milliseconds: 100),
-                                ),
-                                TypewriterAnimatedText(
-                                  'UI/UX Designer',
-                                  speed: const Duration(milliseconds: 100),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                      TypewriterAnimatedText(
+                        'Mobile Developer',
+                        speed: const Duration(milliseconds: 100),
                       ),
-                      const SizedBox(height: 24),
-                      SizedBox(
-                        width: isMobile ? double.infinity : 400,
-                        child: Text(
-                          'Passionate about creating beautiful, responsive, and user-friendly applications. Experienced in various programming languages and frameworks.',
-                          style: theme.textTheme.bodyLarge,
-                        ),
-                      ),
-                      const SizedBox(height: 40),
-                      Row(
-                        children: [
-                          HeroButton(
-                            title: 'Contact Me',
-                            isPrimary: true,
-                            onTap: () {},
-                          ),
-                          const SizedBox(width: 20),
-                          HeroButton(
-                            title: 'View Resume',
-                            isPrimary: false,
-                            onTap: () {},
-                          ),
-                        ],
+                      TypewriterAnimatedText(
+                        'UI/UX Designer',
+                        speed: const Duration(milliseconds: 100),
                       ),
                     ],
                   ),
-                ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+            SizedBox(
+              width: isMobile ? double.infinity : 400,
+              child: Text(
+                'Passionate about creating beautiful, responsive, and user-friendly applications. Experienced in various programming languages and frameworks.',
+                style: theme.textTheme.bodyLarge,
+                textAlign: isColumn ? TextAlign.center : TextAlign.start,
               ),
+            ),
+            const SizedBox(height: 40),
+            Row(
+              mainAxisAlignment: isColumn ? MainAxisAlignment.center : MainAxisAlignment.start,
+              children: [
+                HeroButton(
+                  title: 'Contact Me',
+                  isPrimary: true,
+                  onTap: () {},
+                ),
+                const SizedBox(width: 20),
+                HeroButton(
+                  title: 'View Resume',
+                  isPrimary: false,
+                  onTap: () {},
+                ),
+              ],
             ),
           ],
         ),
-      ),
+      ],
     );
   }
 }
@@ -232,11 +267,11 @@ class _HeroButtonState extends State<HeroButton> {
           decoration: BoxDecoration(
             color: widget.isPrimary
                 ? (_isHovering
-                    ? theme.colorScheme.primary
-                    : theme.colorScheme.primary.withValues(alpha: 0.8))
+                ? theme.colorScheme.primary
+                : theme.colorScheme.primary.withValues(alpha: 0.8))
                 : (_isHovering
-                    ? theme.colorScheme.surface.withValues(alpha: 0.2)
-                    : Colors.transparent),
+                ? theme.colorScheme.surface.withValues(alpha: 0.2)
+                : Colors.transparent),
             borderRadius: BorderRadius.circular(30),
             border: Border.all(
               color: widget.isPrimary
@@ -246,12 +281,12 @@ class _HeroButtonState extends State<HeroButton> {
             ),
             boxShadow: _isHovering && widget.isPrimary
                 ? [
-                    BoxShadow(
-                      color: theme.colorScheme.primary.withValues(alpha: 0.4),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
-                    ),
-                  ]
+              BoxShadow(
+                color: theme.colorScheme.primary.withValues(alpha: 0.4),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ]
                 : [],
           ),
           child: Text(
@@ -260,8 +295,8 @@ class _HeroButtonState extends State<HeroButton> {
               color: widget.isPrimary
                   ? theme.colorScheme.onPrimary
                   : _isHovering
-                      ? theme.colorScheme.primary
-                      : theme.colorScheme.onSurface,
+                  ? theme.colorScheme.primary
+                  : theme.colorScheme.onSurface,
               fontWeight: FontWeight.bold,
             ),
           ),
