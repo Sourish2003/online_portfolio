@@ -42,7 +42,7 @@ class _AnimatedContainerCardState extends State<AnimatedContainerCard> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final Color background = widget.backgroundColor ??
-        theme.colorScheme.surface.withOpacity(0.2);
+        theme.colorScheme.surface.withValues(alpha: 0.2);
 
     return RepaintBoundary(
       child: MouseRegion(
@@ -80,18 +80,18 @@ class _AnimatedContainerCardState extends State<AnimatedContainerCard> {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        background.withOpacity(0.1),
-                        background.withOpacity(0.18),
+                        background.withValues(alpha: 0.1),
+                        background.withValues(alpha: 0.18),
                       ],
                     ),
                     border: Border.all(
                       width: 1.2,
-                      color: widget.borderColor.withOpacity(_isHovering ? 0.7 : 0.25),
+                      color: widget.borderColor.withValues(alpha: _isHovering ? 0.7 : 0.25),
                     ),
                     boxShadow: _isHovering
                         ? [
                             BoxShadow(
-                              color: theme.colorScheme.primary.withOpacity(0.08),
+                              color: theme.colorScheme.primary.withValues(alpha: 0.08),
                               blurRadius: 8,
                               offset: const Offset(0, 2),
                             ),

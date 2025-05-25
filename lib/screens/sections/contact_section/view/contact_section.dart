@@ -5,6 +5,9 @@ import 'package:online_portfolio/widgets/animated_container_card.dart';
 import 'package:online_portfolio/widgets/section_divider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
+import '../../../../services/firestore_service.dart';
+import '../model/contact_submission_model.dart';
+
 class ContactSection extends StatefulWidget {
   final bool isDarkMode;
 
@@ -21,8 +24,12 @@ class _ContactSectionState extends State<ContactSection> {
   late final GlobalKey<FormState> _formKey;
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
   final _messageController = TextEditingController();
+
+  final FirestoreService _firestoreService = FirestoreService();
   bool _isSubmitting = false;
+  String? _errorMessage;
 
   @override
   void initState() {
@@ -34,26 +41,55 @@ class _ContactSectionState extends State<ContactSection> {
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
+    _phoneController.dispose();
     _messageController.dispose();
     super.dispose();
   }
 
-  void _submitForm() {
+  Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
-      setState(() => _isSubmitting = true);
-
-      // Simulate form submission with a delay
-      Future.delayed(const Duration(seconds: 2), () {
-        if (mounted) {
-          setState(() => _isSubmitting = false);
-          _showSuccessDialog();
-          _formKey.currentState!.reset();
-          _nameController.clear();
-          _emailController.clear();
-          _messageController.clear();
-        }
+      setState(() {
+        _isSubmitting = true;
+        _errorMessage = null;
       });
+
+      try {
+        final submission = ContactSubmission(
+          name: _nameController.text.trim(),
+          email: _emailController.text.trim(),
+          phone: _phoneController.text.trim().isEmpty ? null : _phoneController.text.trim(),
+          message: _messageController.text.trim(),
+          timestamp: DateTime.now(),
+        );
+
+        final success = await _firestoreService.submitContactForm(submission);
+
+        if (success) {
+          _showSuccessDialog();
+          _clearForm();
+        } else {
+          setState(() {
+            _errorMessage = 'Failed to send message. Please try again.';
+          });
+        }
+      } catch (e) {
+        setState(() {
+          _errorMessage = 'An error occurred: ${e.toString()}';
+        });
+      } finally {
+        setState(() {
+          _isSubmitting = false;
+        });
+      }
     }
+  }
+
+  void _clearForm() {
+    _formKey.currentState!.reset();
+    _nameController.clear();
+    _emailController.clear();
+    _phoneController.clear();
+    _messageController.clear();
   }
 
   void _showSuccessDialog() {
@@ -61,8 +97,7 @@ class _ContactSectionState extends State<ContactSection> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Message Sent!'),
-        content:
-        const Text('Thank you for your message. I will get back to you soon.'),
+        content: const Text('Thank you for your message. I will get back to you soon.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -101,29 +136,21 @@ class _ContactSectionState extends State<ContactSection> {
         // Contact Form and Info
         isDesktop
             ? Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Contact Form
-                  Expanded(
-                    flex: 3,
-                    child: _buildContactForm(context),
-                  ),
-                  const SizedBox(width: 40),
-                  // Contact Info
-                  Expanded(
-                    flex: 2,
-                    child: _buildContactInfo(context),
-                  ),
-                ],
-              )
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(flex: 3, child: _buildContactForm(context)),
+            const SizedBox(width: 40),
+            Expanded(flex: 2, child: _buildContactInfo(context)),
+          ],
+        )
             : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildContactForm(context),
-                  const SizedBox(height: 40),
-                  _buildContactInfo(context),
-                ],
-              ),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildContactForm(context),
+            const SizedBox(height: 40),
+            _buildContactInfo(context),
+          ],
+        ),
       ],
     );
   }
@@ -148,10 +175,10 @@ class _ContactSectionState extends State<ContactSection> {
             // Name Field
             _buildTextField(
               controller: _nameController,
-              label: 'Name',
+              label: 'Name *',
               prefixIcon: Icons.person_outline,
               validator: (value) {
-                if (value == null || value.isEmpty) {
+                if (value == null || value.trim().isEmpty) {
                   return 'Please enter your name';
                 }
                 return null;
@@ -162,14 +189,13 @@ class _ContactSectionState extends State<ContactSection> {
             // Email Field
             _buildTextField(
               controller: _emailController,
-              label: 'Email',
+              label: 'Email *',
               prefixIcon: Icons.email_outlined,
               validator: (value) {
-                if (value == null || value.isEmpty) {
+                if (value == null || value.trim().isEmpty) {
                   return 'Please enter your email';
                 }
-                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                    .hasMatch(value)) {
+                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
                   return 'Please enter a valid email';
                 }
                 return null;
@@ -177,20 +203,56 @@ class _ContactSectionState extends State<ContactSection> {
             ),
             const SizedBox(height: 16),
 
+            // Phone Field (Optional)
+            _buildTextField(
+              controller: _phoneController,
+              label: 'Phone (Optional)',
+              prefixIcon: Icons.phone_outlined,
+              validator: null, // No validation for optional field
+            ),
+            const SizedBox(height: 16),
+
             // Message Field
             _buildTextField(
               controller: _messageController,
-              label: 'Message',
+              label: 'Message *',
               prefixIcon: Icons.message_outlined,
               maxLines: 5,
               validator: (value) {
-                if (value == null || value.isEmpty) {
+                if (value == null || value.trim().isEmpty) {
                   return 'Please enter your message';
+                }
+                if (value.trim().length < 10) {
+                  return 'Please enter a more detailed message';
                 }
                 return null;
               },
             ),
             const SizedBox(height: 24),
+
+            // Error Message
+            if (_errorMessage != null)
+              Container(
+                margin: const EdgeInsets.only(bottom: 16.0),
+                padding: const EdgeInsets.all(12.0),
+                decoration: BoxDecoration(
+                  color: Colors.red.shade50,
+                  border: Border.all(color: Colors.red.shade200),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.error_outline, color: Colors.red.shade600),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        _errorMessage!,
+                        style: TextStyle(color: Colors.red.shade700),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
 
             // Submit Button
             SizedBox(
@@ -207,20 +269,20 @@ class _ContactSectionState extends State<ContactSection> {
                 ),
                 child: _isSubmitting
                     ? SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: theme.colorScheme.onPrimary,
-                        ),
-                      )
+                  height: 20,
+                  width: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: theme.colorScheme.onPrimary,
+                  ),
+                )
                     : Text(
-                        'Send Message',
-                        style: theme.textTheme.bodyLarge?.copyWith(
-                          color: theme.colorScheme.onPrimary,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                  'Send Message',
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    color: theme.colorScheme.onPrimary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
           ],
@@ -234,7 +296,7 @@ class _ContactSectionState extends State<ContactSection> {
     required String label,
     required IconData prefixIcon,
     int maxLines = 1,
-    required String? Function(String?) validator,
+    String? Function(String?)? validator,
   }) {
     final theme = Theme.of(context);
     final isDark = widget.isDarkMode;
@@ -278,6 +340,7 @@ class _ContactSectionState extends State<ContactSection> {
     );
   }
 
+  // Keep your existing _buildContactInfo method unchanged
   Widget _buildContactInfo(BuildContext context) {
     final theme = Theme.of(context);
 

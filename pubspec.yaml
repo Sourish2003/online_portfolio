@@ -48,6 +48,8 @@ dependencies:
   flutter_staggered_animations:
   font_awesome_flutter:
   url_launcher:
+  firebase_core: ^3.13.1
+  cloud_firestore:
 #  auto_size_text:
 
 dev_dependencies:

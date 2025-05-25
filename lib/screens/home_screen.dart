@@ -7,7 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../widgets/section_divider.dart';
 import 'sections/about_section.dart';
-import 'sections/contact_section.dart';
+import 'sections/contact_section/view/contact_section.dart';
 import 'sections/hero_section.dart';
 import 'sections/projects_section.dart';
 
@@ -94,7 +94,9 @@ class _HomeScreenState extends State<HomeScreen> {
         final RenderBox box = ctx.findRenderObject() as RenderBox;
         final position = box.localToGlobal(Offset.zero);
         // If the section is within 100px from the top, or if it's the last section and mostly visible
-        if (position.dy <= 100 || (i == _sectionKeys.length - 1 && position.dy < scrollHeight - 200)) {
+        if (position.dy <= 100 ||
+            (i == _sectionKeys.length - 1 &&
+                position.dy < scrollHeight - 200)) {
           if (_currentSection != i) {
             setState(() {
               _currentSection = i;
@@ -110,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // Fix for navigation - ensure ScrollController is used properly
     if (_sectionKeys[index].currentContext != null) {
       final RenderBox box =
-      _sectionKeys[index].currentContext!.findRenderObject() as RenderBox;
+          _sectionKeys[index].currentContext!.findRenderObject() as RenderBox;
       final position = box.localToGlobal(Offset.zero);
 
       // Calculate the target scroll offset
@@ -135,7 +137,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final theme = Theme.of(context);
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth <= 460; // Adjusted from 450 to 460
-    final isTabletOrDesktop = screenWidth > 460; // Show top bar for screens wider than 460px
+    final isTabletOrDesktop =
+        screenWidth > 460; // Show top bar for screens wider than 460px
 
     return CursorAnimation(
       defaultColor: theme.colorScheme.primary.withValues(alpha: 0.3),
@@ -143,35 +146,36 @@ class _HomeScreenState extends State<HomeScreen> {
       child: AnimatedBackground(
         gradientColors: widget.isDarkMode
             ? const [
-          Color(0xFF1A1A2E),
-          Color(0xFF16213E),
-          Color(0xFF0F3460),
-          Color(0xFF541690),
-        ]
+                Color(0xFF1A1A2E),
+                Color(0xFF16213E),
+                Color(0xFF0F3460),
+                Color(0xFF541690),
+              ]
             : const [
-          Color(0xFFF8F9FA),
-          Color(0xFFE9ECEF),
-          Color(0xFFDEE2E6),
-          Color(0xFFCED4DA),
-        ],
+                Color(0xFFF8F9FA),
+                Color(0xFFE9ECEF),
+                Color(0xFFDEE2E6),
+                Color(0xFFCED4DA),
+              ],
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
-            title: isTabletOrDesktop // Show navigation bar for screens wider than 460px
-                ? Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                _sections.length,
-                    (index) => NavBarItem(
-                  title: _sections[index],
-                  isActive: _currentSection == index,
-                  onTap: () => _scrollToSection(index),
-                ),
-              ),
-            )
-                : null,
+            title:
+                isTabletOrDesktop // Show navigation bar for screens wider than 460px
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(
+                          _sections.length,
+                          (index) => NavBarItem(
+                            title: _sections[index],
+                            isActive: _currentSection == index,
+                            onTap: () => _scrollToSection(index),
+                          ),
+                        ),
+                      )
+                    : null,
             actions: [
               IconButton(
                 icon: Icon(
@@ -185,35 +189,36 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           drawer: isMobile // Only show drawer for screens 460px and below
               ? Drawer(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: [
-                DrawerHeader(
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.primary,
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    children: [
+                      DrawerHeader(
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.primary,
+                        ),
+                        child: Text(
+                          'Menu',
+                          style: theme.textTheme.headlineMedium?.copyWith(
+                            color: theme.colorScheme.onPrimary,
+                          ),
+                        ),
+                      ),
+                      ...List.generate(
+                        _sections.length,
+                        (index) => ListTile(
+                          title: Text(_sections[index]),
+                          selected: _currentSection == index,
+                          selectedTileColor:
+                              theme.colorScheme.primary.withValues(alpha: 0.1),
+                          onTap: () {
+                            Navigator.pop(context);
+                            _scrollToSection(index);
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                  child: Text(
-                    'Menu',
-                    style: theme.textTheme.headlineMedium?.copyWith(
-                      color: theme.colorScheme.onPrimary,
-                    ),
-                  ),
-                ),
-                ...List.generate(
-                  _sections.length,
-                      (index) => ListTile(
-                    title: Text(_sections[index]),
-                    selected: _currentSection == index,
-                    selectedTileColor: theme.colorScheme.primary.withValues(alpha: 0.1),
-                    onTap: () {
-                      Navigator.pop(context);
-                      _scrollToSection(index);
-                    },
-                  ),
-                ),
-              ],
-            ),
-          )
+                )
               : null,
           body: RawScrollbar(
             controller: _scrollController,
@@ -257,15 +262,15 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           floatingActionButton: _showScrollToTop
               ? FloatingActionButton(
-            onPressed: () {
-              _scrollController.animateTo(
-                0,
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.easeInOut,
-              );
-            },
-            child: const Icon(Icons.arrow_upward),
-          )
+                  onPressed: () {
+                    _scrollController.animateTo(
+                      0,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeInOut,
+                    );
+                  },
+                  child: const Icon(Icons.arrow_upward),
+                )
               : null,
         ),
       ),
@@ -344,7 +349,7 @@ class _NavBarItemState extends State<NavBarItem> {
                       ? theme.colorScheme.primary
                       : theme.colorScheme.onSurface,
                   fontWeight:
-                  widget.isActive ? FontWeight.bold : FontWeight.normal,
+                      widget.isActive ? FontWeight.bold : FontWeight.normal,
                 ),
               ),
               const SizedBox(height: 4),

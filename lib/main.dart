@@ -1,12 +1,24 @@
+import 'dart:developer';
+
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:online_portfolio/themes/themes.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
+import 'firebase_options.dart';
 import 'screens/home_screen.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    log("Firebase initialized successfully");
+  } catch (e) {
+    log("Firebase initialization error: $e");
+  }
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.landscapeLeft,

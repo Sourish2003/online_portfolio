@@ -36,8 +36,8 @@ class SectionDivider extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  (color ?? theme.textTheme.headlineMedium?.color)?.withOpacity(0.1) ?? Colors.black,
-                  (color ?? theme.textTheme.headlineMedium?.color)?.withOpacity(0.8) ?? Colors.black,
+                  (color ?? theme.textTheme.headlineMedium?.color)?.withValues(alpha: 0.1) ?? Colors.black,
+                  (color ?? theme.textTheme.headlineMedium?.color)?.withValues(alpha: 0.8) ?? Colors.black,
                 ],
               ),
             ),
@@ -56,8 +56,8 @@ class SectionDivider extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  (color ?? theme.textTheme.headlineMedium?.color)?.withOpacity(0.8) ?? Colors.black,
-                  (color ?? theme.textTheme.headlineMedium?.color)?.withOpacity(0.1) ?? Colors.black,
+                  (color ?? theme.textTheme.headlineMedium?.color)?.withValues(alpha: 0.8) ?? Colors.black,
+                  (color ?? theme.textTheme.headlineMedium?.color)?.withValues(alpha: 0.1) ?? Colors.black,
                 ],
               ),
             ),
