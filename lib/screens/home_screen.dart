@@ -47,8 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _scrollController.addListener(_scrollListener);
-
-    // Ensure we update the current section after the first layout
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _updateCurrentSectionFromScroll();
     });
@@ -65,19 +63,14 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _showScrollToTop = _scrollController.offset > 300;
     });
-
-    // Debounce the section update to make it more efficient
     _updateCurrentSectionFromScroll();
   }
 
   void _updateCurrentSectionFromScroll() {
-    // Get the scrollable area height and current scroll position
     final scrollBox = context.findRenderObject() as RenderBox?;
     final scrollHeight = scrollBox?.size.height ?? 0;
     final scrollOffset = _scrollController.offset;
     final maxScrollExtent = _scrollController.position.maxScrollExtent;
-
-    // If at the very bottom, set to last section
     if ((scrollOffset + 10) >= maxScrollExtent) {
       if (_currentSection != _sectionKeys.length - 1) {
         setState(() {
@@ -87,13 +80,11 @@ class _HomeScreenState extends State<HomeScreen> {
       return;
     }
 
-    // Otherwise, check which section is closest to the top
     for (int i = _sectionKeys.length - 1; i >= 0; i--) {
       final ctx = _sectionKeys[i].currentContext;
       if (ctx != null) {
         final RenderBox box = ctx.findRenderObject() as RenderBox;
         final position = box.localToGlobal(Offset.zero);
-        // If the section is within 100px from the top, or if it's the last section and mostly visible
         if (position.dy <= 100 ||
             (i == _sectionKeys.length - 1 &&
                 position.dy < scrollHeight - 200)) {
@@ -109,23 +100,19 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _scrollToSection(int index) {
-    // Fix for navigation - ensure ScrollController is used properly
     if (_sectionKeys[index].currentContext != null) {
       final RenderBox box =
           _sectionKeys[index].currentContext!.findRenderObject() as RenderBox;
       final position = box.localToGlobal(Offset.zero);
 
-      // Calculate the target scroll offset
       final double targetOffset = _scrollController.offset + position.dy - 80;
 
-      // Use the ScrollController directly to perform the scroll
       _scrollController.animateTo(
         targetOffset,
         duration: const Duration(milliseconds: 800),
         curve: Curves.easeInOut,
       );
 
-      // Update the current section index
       setState(() {
         _currentSection = index;
       });
@@ -136,9 +123,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final screenWidth = MediaQuery.of(context).size.width;
-    final isMobile = screenWidth <= 460; // Adjusted from 450 to 460
+    final isMobile = screenWidth <= 460;
     final isTabletOrDesktop =
-        screenWidth > 460; // Show top bar for screens wider than 460px
+        screenWidth > 460;
 
     return CursorAnimation(
       defaultColor: theme.colorScheme.primary.withValues(alpha: 0.3),
@@ -163,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             title:
-                isTabletOrDesktop // Show navigation bar for screens wider than 460px
+                isTabletOrDesktop
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: List.generate(
@@ -187,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(width: 16),
             ],
           ),
-          drawer: isMobile // Only show drawer for screens 460px and below
+          drawer: isMobile
               ? Drawer(
                   child: ListView(
                     padding: EdgeInsets.zero,

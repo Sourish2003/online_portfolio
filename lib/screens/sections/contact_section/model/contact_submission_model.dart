@@ -24,7 +24,7 @@ class ContactSubmission {
       'email': email,
       'phone': phone,
       'message': message,
-      'timestamp': timestamp.millisecondsSinceEpoch, // Use milliseconds instead
+      'timestamp': Timestamp.fromDate(timestamp), // Convert DateTime to Firestore Timestamp
     };
   }
 
@@ -37,7 +37,7 @@ class ContactSubmission {
       email: data['email'] ?? '',
       phone: data['phone'],
       message: data['message'] ?? '',
-      timestamp: DateTime.fromMillisecondsSinceEpoch(data['timestamp'] ?? 0),
+      timestamp: (data['timestamp'] as Timestamp).toDate(), // Convert Firestore Timestamp back to DateTime
     );
   }
 }

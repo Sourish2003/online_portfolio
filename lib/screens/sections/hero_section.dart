@@ -22,7 +22,6 @@ class _SimpleParallaxState extends State<SimpleParallax> {
     return MouseRegion(
       onHover: (event) {
         final size = MediaQuery.of(context).size;
-        // Calculate position relative to center
         final dx = (event.position.dx - size.width / 2) / (size.width / 2);
         final dy = (event.position.dy - size.height / 2) / (size.height / 2);
         setState(() {
@@ -38,7 +37,7 @@ class _SimpleParallaxState extends State<SimpleParallax> {
         duration: const Duration(milliseconds: 150),
         curve: Curves.easeOutQuad,
         transform: Matrix4.identity()
-          ..setEntry(3, 2, 0.001) // Adds perspective
+          ..setEntry(3, 2, 0.001)
           ..rotateX(_offset.dy)
           ..rotateY(-_offset.dx)
           ..translate(_offset.dx * 15, _offset.dy * 15),
@@ -58,7 +57,7 @@ class HeroSection extends StatelessWidget {
     final isMobile = ResponsiveBreakpoints.of(context).equals(MOBILE);
 
     return SimpleParallax(
-      depth: 0.03, // Adjust this value to control parallax sensitivity
+      depth: 0.03,
       child: Container(
         constraints: BoxConstraints(
           minHeight: MediaQuery.of(context).size.height * 0.9,
@@ -103,8 +102,6 @@ class HeroSection extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 40.0),
           child: _buildProfileImage(theme, 280.0),
         ),
-
-        // Text Content below the image
         _buildTextContent(context, theme, isMobile, isColumn: true),
       ],
     );
@@ -159,7 +156,7 @@ class HeroSection extends StatelessWidget {
               'Sourish Merugumilli',
               style: theme.textTheme.displayLarge?.copyWith(
                 color: theme.textTheme.displayLarge?.color,
-                fontSize: isMobile ? 36 : null, // Smaller font size for mobile
+                fontSize: isMobile ? 36 : null,
               ),
               textAlign: isColumn ? TextAlign.center : TextAlign.start,
             ),

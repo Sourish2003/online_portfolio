@@ -208,7 +208,7 @@ class _ContactSectionState extends State<ContactSection> {
               controller: _phoneController,
               label: 'Phone (Optional)',
               prefixIcon: Icons.phone_outlined,
-              validator: null, // No validation for optional field
+              validator: null,
             ),
             const SizedBox(height: 16),
 
@@ -340,7 +340,6 @@ class _ContactSectionState extends State<ContactSection> {
     );
   }
 
-  // Keep your existing _buildContactInfo method unchanged
   Widget _buildContactInfo(BuildContext context) {
     final theme = Theme.of(context);
 

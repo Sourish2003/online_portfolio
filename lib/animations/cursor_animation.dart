@@ -25,17 +25,14 @@ class _CursorAnimationState extends State<CursorAnimation> {
   bool _isMouseInside = false;
   bool _isHovering = false;
 
-  // Track if the user is actively scrolling
   bool _isScrolling = false;
 
   @override
   Widget build(BuildContext context) {
     return Listener(
-      // Add a listener to detect scroll events
       onPointerSignal: (event) {
         setState(() {
           _isScrolling = true;
-          // Reset the scrolling state after a delay
           Future.delayed(const Duration(milliseconds: 200), () {
             if (mounted) {
               setState(() {
@@ -65,11 +62,11 @@ class _CursorAnimationState extends State<CursorAnimation> {
         child: Stack(
           children: [
             widget.child,
-            if (_isMouseInside && !_isScrolling) // Only show the custom cursor when not scrolling
+            if (_isMouseInside && !_isScrolling)
               Positioned(
                 left: _mousePosition.dx - widget.size / 2,
                 top: _mousePosition.dy - widget.size / 2,
-                child: IgnorePointer( // Make sure this doesn't interfere with scroll events
+                child: IgnorePointer(
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
                     width: widget.size,

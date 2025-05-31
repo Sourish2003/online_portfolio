@@ -42,7 +42,6 @@ class _AnimatedRevealTextState extends State<AnimatedRevealText>
       curve: widget.curve,
     );
 
-    // Start animation after delay
     if (widget.delay == Duration.zero) {
       _isReady = true;
       _controller.forward();
@@ -111,12 +110,10 @@ class AnimatedRevealItems extends StatefulWidget {
 
 class _AnimatedRevealItemsState extends State<AnimatedRevealItems>
     with TickerProviderStateMixin {
-  // List to keep track of all animation controllers
   final List<AnimationController> _controllers = [];
 
   @override
   void dispose() {
-    // Dispose all animation controllers
     for (final controller in _controllers) {
       controller.dispose();
     }
@@ -154,7 +151,6 @@ class _AnimatedRevealItemsState extends State<AnimatedRevealItems>
   }
 
   Animation<double> _createAnimation(Duration delay) {
-    // Ensure weight is always positive
     final delayWeight = delay.inMilliseconds > 0 ? delay.inMilliseconds / 1000 : 0.01;
     
     final controller = AnimationController(
@@ -162,7 +158,6 @@ class _AnimatedRevealItemsState extends State<AnimatedRevealItems>
       duration: delay + const Duration(milliseconds: 800),
     );
     
-    // Add controller to the list for disposal later
     _controllers.add(controller);
     
     controller.forward();
@@ -184,7 +179,6 @@ class _AnimatedRevealItemsState extends State<AnimatedRevealItems>
   }
 
   Animation<Offset> _createSlideAnimation(Duration delay) {
-    // Ensure weight is always positive
     final delayWeight = delay.inMilliseconds > 0 ? delay.inMilliseconds / 1000 : 0.01;
     
     final controller = AnimationController(
@@ -192,7 +186,6 @@ class _AnimatedRevealItemsState extends State<AnimatedRevealItems>
       duration: delay + const Duration(milliseconds: 800),
     );
     
-    // Add controller to the list for disposal later
     _controllers.add(controller);
     
     controller.forward();

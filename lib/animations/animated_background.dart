@@ -71,8 +71,6 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
             AnimatedBuilder(
               animation: _pulseAnimation,
               builder: (context, child) {
-                // Calculate gradient position based on mouse movement
-                // Gradient center adjusts based on mouse position
                 return Container(
                   width: double.infinity,
                   height: double.infinity,
@@ -166,7 +164,6 @@ class _AnimatedParticlesState extends State<AnimatedParticles>
         animation: _animationController,
         builder: (context, child) {
           for (var particle in _particles) {
-            // Move particle based on its speed and angle
             particle.position = Offset(
               (particle.position.dx + math.cos(particle.angle) * particle.speed) %
                   size.width,
@@ -174,7 +171,6 @@ class _AnimatedParticlesState extends State<AnimatedParticles>
                   size.height,
             );
 
-            // Slightly adjust angle based on mouse position
             final double distanceToMouse =
                 (particle.position - widget.mousePosition).distance;
             if (distanceToMouse < 200) {
