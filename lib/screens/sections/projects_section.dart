@@ -146,7 +146,7 @@ class FeaturedProject extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         Text(
-          'Mobile E-Commerce App',
+          'Food Fitness Healthcare Apps',
           style: theme.textTheme.headlineMedium?.copyWith(
             fontWeight: FontWeight.bold,
             color: theme.textTheme.headlineMedium?.color,
@@ -154,7 +154,9 @@ class FeaturedProject extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         Text(
-          'A modern e-commerce mobile application with advanced animations, beautiful UI, and seamless user experience. Includes features like product search, filtering, user authentication, and payment processing.',
+          'Comprehensive healthcare applications for doctors and patients with MVVM architecture. '
+              'Features include secure OTP authentication, JWT token management, video consultations '
+              'via Jitsi Meet, and family profile management. Reduced in-person appointments by 70%.',
           style: theme.textTheme.bodyLarge,
         ),
         const SizedBox(height: 24),
@@ -163,9 +165,11 @@ class FeaturedProject extends StatelessWidget {
           runSpacing: 12.0,
           children: [
             TechChip(label: 'Flutter'),
-            TechChip(label: 'Firebase'),
-            TechChip(label: 'State Management'),
-            TechChip(label: 'Payment Gateway'),
+            TechChip(label: 'MVVM'),
+            TechChip(label: 'Provider'),
+            TechChip(label: 'Dio'),
+            TechChip(label: 'Jitsi Meet'),
+            TechChip(label: 'Go Router'),
           ],
         ),
         const SizedBox(height: 24),
@@ -205,32 +209,36 @@ class ProjectGrid extends StatelessWidget {
     // List of projects
     final projects = [
       ProjectData(
+        title: 'Real-time Object Detection System',
+        description:
+        'YOLOv8-based industrial object detection with camera calibration for BARC. '
+            'Achieved 80% accuracy with GUI for real-time monitoring.',
+        image: ImageConstants.project2,
+        tags: ['YOLOv8', 'Python', 'OpenCV', 'Tkinter'],
+      ),
+      ProjectData(
+        title: 'Fragile Asset Tracking App',
+        description:
+        'IoT-based mobile app for real-time asset tracking with GPS. Reduced lost '
+            'assets by 25% and increased delivery efficiency by 15%.',
+        image: ImageConstants.project3,
+        tags: ['Flutter', 'Firebase', 'IoT', 'GPS'],
+      ),
+      ProjectData(
+        title: 'SmartReps Fitness App',
+        description:
+        'ML-powered yoga pose detection with wearable temperature tracking. '
+            'Integrates real-time feedback for safer workouts.',
+        image: ImageConstants.project1,
+        tags: ['Python', 'TensorFlow.js', 'Firebase', 'IoT'],
+      ),
+      ProjectData(
         title: 'Portfolio Website',
         description:
-            'A responsive portfolio website built with modern web technologies and animations.',
-        image: ImageConstants.project2,
-        tags: ['React', 'JavaScript', 'CSS', 'Animation'],
-      ),
-      ProjectData(
-        title: 'Task Management App',
-        description:
-            'A productivity app for managing tasks, with reminders and progress tracking.',
+        'Modern responsive portfolio with smooth animations and beautiful UI. '
+            'Built with Flutter Web and Firebase integration.',
         image: ImageConstants.project3,
-        tags: ['Flutter', 'Firebase', 'State Management'],
-      ),
-      ProjectData(
-        title: 'Social Media Dashboard',
-        description:
-            'An analytics dashboard for social media performance monitoring and reporting.',
-        image: ImageConstants.project1,
-        tags: ['React', 'Node.js', 'Data Visualization'],
-      ),
-      ProjectData(
-        title: 'Weather Application',
-        description:
-            'Real-time weather application with beautiful UI and accurate forecasts.',
-        image: ImageConstants.project2,
-        tags: ['Flutter', 'API Integration', 'Animations'],
+        tags: ['Flutter Web', 'Firebase', 'Animations'],
       ),
     ];
 

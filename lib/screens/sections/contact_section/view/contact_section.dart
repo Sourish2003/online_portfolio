@@ -4,8 +4,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:online_portfolio/widgets/animated_container_card.dart';
 import 'package:online_portfolio/widgets/section_divider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 
 import '../../../../services/firestore_service.dart';
+import '../../../home_screen.dart';
 import '../model/contact_submission_model.dart';
 
 class ContactSection extends StatefulWidget {
@@ -26,6 +28,7 @@ class _ContactSectionState extends State<ContactSection> {
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _messageController = TextEditingController();
+  String _selectedCountryCode = '+91'; // Default country code
 
   final FirestoreService _firestoreService = FirestoreService();
   bool _isSubmitting = false;
@@ -46,6 +49,27 @@ class _ContactSectionState extends State<ContactSection> {
     super.dispose();
   }
 
+  // Phone number validation
+  String? _validatePhoneNumber(String? value) {
+    if (value == null || value.isEmpty) {
+      return null; // Phone is optional
+    }
+    
+    // Remove any non-digit characters except plus sign
+    final cleanPhone = value.replaceAll(RegExp(r'[^\d+]'), '');
+
+    if (cleanPhone.length < 10) {
+      return 'Please enter a valid phone number';
+    }
+    
+    // Check if the number contains only digits
+    if (!RegExp(r'^\+?\d+$').hasMatch(cleanPhone)) {
+      return 'Phone number can only contain digits';
+    }
+    
+    return null;
+  }
+
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
@@ -54,10 +78,16 @@ class _ContactSectionState extends State<ContactSection> {
       });
 
       try {
+        // Combine country code and phone number if phone is provided
+        String? fullPhoneNumber;
+        if (_phoneController.text.trim().isNotEmpty) {
+          fullPhoneNumber = '$_selectedCountryCode${_phoneController.text.trim()}';
+        }
+
         final submission = ContactSubmission(
           name: _nameController.text.trim(),
           email: _emailController.text.trim(),
-          phone: _phoneController.text.trim().isEmpty ? null : _phoneController.text.trim(),
+          phone: fullPhoneNumber,
           message: _messageController.text.trim(),
           timestamp: DateTime.now(),
         );
@@ -157,6 +187,7 @@ class _ContactSectionState extends State<ContactSection> {
 
   Widget _buildContactForm(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = widget.isDarkMode;
 
     return AnimatedContainerCard(
       child: Form(
@@ -195,7 +226,7 @@ class _ContactSectionState extends State<ContactSection> {
                 if (value == null || value.trim().isEmpty) {
                   return 'Please enter your email';
                 }
-                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                if (!RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
                   return 'Please enter a valid email';
                 }
                 return null;
@@ -203,12 +234,86 @@ class _ContactSectionState extends State<ContactSection> {
             ),
             const SizedBox(height: 16),
 
-            // Phone Field (Optional)
-            _buildTextField(
-              controller: _phoneController,
-              label: 'Phone (Optional)',
-              prefixIcon: Icons.phone_outlined,
-              validator: null,
+            // Phone Field with Country Code Picker
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: isDark
+                          ? Colors.white.withValues(alpha: 0.1)
+                          : Colors.black.withValues(alpha: 0.1),
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: CountryCodePicker(
+                    onChanged: (CountryCode code) {
+                      setState(() {
+                        _selectedCountryCode = code.dialCode ?? '+91';
+                      });
+                    },
+                    initialSelection: 'IN',
+                    favorite: const ['US', 'GB', 'CA', 'IN'],
+                    showCountryOnly: false,
+                    showOnlyCountryWhenClosed: false,
+                    alignLeft: false,
+                    textStyle: theme.textTheme.bodyMedium,
+                    dialogTextStyle: theme.textTheme.bodyMedium,
+                    searchStyle: theme.textTheme.bodyMedium,
+                    dialogBackgroundColor: theme.scaffoldBackgroundColor,
+                    searchDecoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: TextFormField(
+                    controller: _phoneController,
+                    validator: _validatePhoneNumber,
+                    style: theme.textTheme.bodyMedium,
+                    keyboardType: TextInputType.phone,
+                    decoration: InputDecoration(
+                      labelText: 'Phone (Optional)',
+                      prefixIcon: const Icon(Icons.phone_outlined),
+                      filled: true,
+                      fillColor: isDark
+                          ? Colors.white.withValues(alpha: 0.05)
+                          : Colors.black.withValues(alpha: 0.03),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                          color: isDark
+                              ? Colors.white.withValues(alpha: 0.1)
+                              : Colors.black.withValues(alpha: 0.1),
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                          color: isDark
+                              ? Colors.white.withValues(alpha: 0.1)
+                              : Colors.black.withValues(alpha: 0.1),
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.primary,
+                          width: 2,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 16),
 
@@ -362,17 +467,17 @@ class _ContactSectionState extends State<ContactSection> {
                 _buildContactItem(
                   icon: Icons.email_outlined,
                   title: 'Email',
-                  detail: 'john.doe@example.com',
+                  detail: 'sourish666@gmail.com',
                 ),
                 _buildContactItem(
                   icon: Icons.phone_outlined,
                   title: 'Phone',
-                  detail: '+1 (123) 456-7890',
+                  detail: '+91 99693 51402',
                 ),
                 _buildContactItem(
                   icon: Icons.location_on_outlined,
                   title: 'Location',
-                  detail: 'San Francisco, CA',
+                  detail: 'Mumbai, Maharashtra, India',
                 ),
               ]
                   .animate(interval: 100.ms)
@@ -399,19 +504,19 @@ class _ContactSectionState extends State<ContactSection> {
                 children: [
                   _buildSocialButton(
                     icon: FontAwesomeIcons.github,
-                    onTap: () {},
+                    onTap: () => launchURL('https://github.com/Sourish2003'),
                   ),
                   _buildSocialButton(
                     icon: FontAwesomeIcons.linkedin,
-                    onTap: () {},
+                    onTap: () => launchURL('https://www.linkedin.com/in/sourish-merugumilli/'),
                   ),
                   _buildSocialButton(
                     icon: FontAwesomeIcons.twitter,
-                    onTap: () {},
+                    onTap: () => launchURL('https://twitter.com/username'), // Update with actual
                   ),
                   _buildSocialButton(
-                    icon: FontAwesomeIcons.instagram,
-                    onTap: () {},
+                    icon: FontAwesomeIcons.kaggle,
+                    onTap: () => launchURL('https://www.kaggle.com/sourishm'),
                   ),
                 ],
               ),

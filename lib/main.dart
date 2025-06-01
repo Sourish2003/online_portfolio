@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Portfolio',
+      title: 'Sourish Merugumilli - Portfolio',
       debugShowCheckedModeBanner: false,
       theme: _isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme,
       builder: (context, child) => ResponsiveBreakpoints.builder(

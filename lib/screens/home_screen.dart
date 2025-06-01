@@ -11,7 +11,6 @@ import 'sections/contact_section/view/contact_section.dart';
 import 'sections/hero_section.dart';
 import 'sections/projects_section.dart';
 
-// Utility function to launch URLs
 void launchURL(String url) async {
   try {
     final Uri uri = Uri.parse(url);
@@ -380,22 +379,22 @@ class FooterSection extends StatelessWidget {
             children: [
               SocialIcon(
                 icon: FontAwesomeIcons.github,
-                onTap: () => launchURL('https://github.com/yourusername'),
+                onTap: () => launchURL('https://github.com/Sourish2003'),
                 isDarkMode: isDarkMode,
               ),
               SocialIcon(
                 icon: FontAwesomeIcons.linkedin,
-                onTap: () => launchURL('https://linkedin.com/in/yourprofile'),
+                onTap: () => launchURL('https://www.linkedin.com/in/sourish-merugumilli/'),
                 isDarkMode: isDarkMode,
               ),
               SocialIcon(
                 icon: FontAwesomeIcons.envelope,
-                onTap: () => launchURL('mailto:your.email@example.com'),
+                onTap: () => launchURL('mailto:sourish666@gmail.com'),
                 isDarkMode: isDarkMode,
               ),
               SocialIcon(
-                icon: FontAwesomeIcons.twitter,
-                onTap: () => launchURL('https://twitter.com/yourusername'),
+                icon: FontAwesomeIcons.code,
+                onTap: () => launchURL('https://leetcode.com/sourish666/'),
                 isDarkMode: isDarkMode,
               ),
             ],

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:online_portfolio/animations/animated_reveal.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
+import '../home_screen.dart';
+
 // Custom Parallax implementation
 class SimpleParallax extends StatefulWidget {
   final Widget child;
@@ -177,19 +179,19 @@ class HeroSection extends StatelessWidget {
                     repeatForever: true,
                     animatedTexts: [
                       TypewriterAnimatedText(
-                        'Software Developer',
+                        'Flutter Developer',
                         speed: const Duration(milliseconds: 100),
                       ),
                       TypewriterAnimatedText(
-                        'Web Designer',
+                        'Frontend Developer',
                         speed: const Duration(milliseconds: 100),
                       ),
                       TypewriterAnimatedText(
-                        'Mobile Developer',
+                        'AIML Enthusiast',
                         speed: const Duration(milliseconds: 100),
                       ),
                       TypewriterAnimatedText(
-                        'UI/UX Designer',
+                        'Mobile App Developer',
                         speed: const Duration(milliseconds: 100),
                       ),
                     ],
@@ -201,7 +203,10 @@ class HeroSection extends StatelessWidget {
             SizedBox(
               width: isMobile ? double.infinity : 400,
               child: Text(
-                'Passionate about creating beautiful, responsive, and user-friendly applications. Experienced in various programming languages and frameworks.',
+                'Passionate Frontend Developer with expertise in Flutter and Cross-Platform Apps. '
+                    'I love creating beautiful, responsive applications and have a strong interest in '
+                    'video editing and graphics designing. Currently working on healthcare applications '
+                    'with modern architectures.',
                 style: theme.textTheme.bodyLarge,
                 textAlign: isColumn ? TextAlign.center : TextAlign.start,
               ),
@@ -219,7 +224,7 @@ class HeroSection extends StatelessWidget {
                 HeroButton(
                   title: 'View Resume',
                   isPrimary: false,
-                  onTap: () {},
+                  onTap: () => launchURL('assets/resume/SOURISH_MERUGUMILLI_Flutter.pdf'),
                 ),
               ],
             ),
