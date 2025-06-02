@@ -72,17 +72,30 @@ class AboutSection extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            'I am a passionate software developer with over 5 years of experience in building web and mobile applications. I specialize in frontend development and creating beautiful user interfaces with smooth animations.',
+            'Hello, I am a motivated Software Engineer with a passion for Frontend Development '
+                'for both Web and Cross-Platform Apps, along with a strong interest in video editing '
+                'and graphics designing.',
             style: theme.textTheme.bodyLarge,
           ),
           const SizedBox(height: 16),
           Text(
-            'My journey in software development began during my college years when I discovered my passion for creating digital experiences that people love to use. Since then, I\'ve worked with various technologies and frameworks to build responsive and user-friendly applications.',
+            'Currently working as a Flutter Developer at Quantasis, I\'ve been developing '
+                'comprehensive healthcare applications using MVVM architecture. Previously, I completed '
+                'an 8-month internship at BARC where I worked on real-time object detection using YOLOv8 '
+                'and machine learning.',
             style: theme.textTheme.bodyLarge,
           ),
           const SizedBox(height: 16),
           Text(
-            'When I\'m not coding, you can find me exploring nature, reading books, or learning new technologies to stay updated with the rapidly evolving tech industry.',
+            'When I\'m not working, you can usually find me enjoying my hobbies. I\'m an avid '
+                'video gamer and music listener and love to play basketball in my free time. '
+                'Additionally, I am proud to have achieved a Black Belt in Karate.',
+            style: theme.textTheme.bodyLarge,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'I am always looking to learn new skills and take on new challenges. I am confident '
+                'that my strong work ethic, creativity, and passion will make me a valuable asset to any team.',
             style: theme.textTheme.bodyLarge,
           ),
         ],
@@ -94,14 +107,16 @@ class AboutSection extends StatelessWidget {
     final theme = Theme.of(context);
 
     final List<SkillData> skills = [
-      SkillData(name: 'Flutter', level: 0.9),
-      SkillData(name: 'Dart', level: 0.9),
-      SkillData(name: 'React', level: 0.8),
-      SkillData(name: 'JavaScript', level: 0.85),
-      SkillData(name: 'HTML/CSS', level: 0.95),
-      SkillData(name: 'UI/UX Design', level: 0.75),
-      SkillData(name: 'Firebase', level: 0.7),
-      SkillData(name: 'Node.js', level: 0.6),
+      SkillData(name: 'Flutter', level: 0.90),
+      SkillData(name: 'Dart', level: 0.90),
+      SkillData(name: 'Firebase', level: 0.80),
+      SkillData(name: 'Python', level: 0.75),
+      SkillData(name: 'C++', level: 0.75),
+      SkillData(name: 'Machine Learning', level: 0.70),
+      SkillData(name: 'YOLOv8', level: 0.70),
+      SkillData(name: 'MVVM Architecture', level: 0.65),
+      SkillData(name: 'ReactJS', level: 0.60),
+      SkillData(name: 'Video Editing', level: 0.70),
     ];
 
     return AnimatedContainerCard(
@@ -195,25 +210,22 @@ class AboutSection extends StatelessWidget {
                       'Work Experience',
                       [
                         TimelineItem(
-                          title: 'Senior Flutter Developer',
-                          organization: 'Tech Solutions Inc.',
-                          duration: '2021 - Present',
+                          title: 'Flutter Developer',
+                          organization: 'Quantasis Private Limited',
+                          duration: 'Nov 2024 - Present',
                           description:
-                              'Lead developer for multiple mobile applications with complex animations and responsive designs.',
+                          'Developing comprehensive healthcare applications using Flutter with MVVM architecture. '
+                              'Implemented secure authentication, video consultation functionality with Jitsi Meet, '
+                              'and created robust family profile management systems. Improved user experience by 13%.',
                         ),
                         TimelineItem(
-                          title: 'Frontend Developer',
-                          organization: 'Web Designs Co.',
-                          duration: '2018 - 2021',
+                          title: 'Project Trainee',
+                          organization: 'Bhabha Atomic Research Centre (BARC)',
+                          duration: 'Sep 2023 - Apr 2024',
                           description:
-                              'Developed responsive web applications using React and modern JavaScript.',
-                        ),
-                        TimelineItem(
-                          title: 'Junior Developer',
-                          organization: 'Startup Hub',
-                          duration: '2016 - 2018',
-                          description:
-                              'Worked on various web projects using HTML, CSS, and JavaScript.',
+                          'Developed real-time object detection system using YOLOv8 for industrial environments. '
+                              'Achieved 80% accuracy in conveyor belt detection and reduced error margin by 15% '
+                              'through camera calibration integration.',
                         ),
                       ],
                     ),
@@ -227,25 +239,26 @@ class AboutSection extends StatelessWidget {
                       'Education',
                       [
                         TimelineItem(
-                          title: 'Master\'s in Computer Science',
-                          organization: 'Tech University',
-                          duration: '2014 - 2016',
+                          title: 'Bachelor of Engineering (B.E.)',
+                          organization: 'Shah and Anchor Kutchhi Engineering College',
+                          duration: '2020 - 2024',
                           description:
-                              'Specialized in User Interface Design and Web Technologies.',
+                          'Information Technology major with 7.6/9.0 GPA (92%). Relevant coursework included '
+                              'DBMS, OOP, Computer Networks, Data Mining and BI, AIDS, and Software Engineering.',
                         ),
                         TimelineItem(
-                          title: 'Bachelor\'s in Computer Science',
-                          organization: 'State University',
-                          duration: '2010 - 2014',
+                          title: 'Senior Secondary (Class XII)',
+                          organization: 'Ryan International School, Mumbai',
+                          duration: '2018 - 2020',
                           description:
-                              'Graduated with honors. Participated in various coding competitions.',
+                          'CBSE Board - Science stream. Focused on Mathematics and Computer Science.',
                         ),
                         TimelineItem(
-                          title: 'High School Diploma',
-                          organization: 'City High School',
-                          duration: '2006 - 2010',
+                          title: 'Secondary (Class X)',
+                          organization: 'Atomic Energy Central School-3',
+                          duration: '2010 - 2018',
                           description:
-                              'Focused on Mathematics and Computer Science.',
+                          'CBSE Board - Achieved strong foundation in Science and Mathematics.',
                         ),
                       ],
                     ),
@@ -259,25 +272,22 @@ class AboutSection extends StatelessWidget {
                     'Work Experience',
                     [
                       TimelineItem(
-                        title: 'Senior Flutter Developer',
-                        organization: 'Tech Solutions Inc.',
-                        duration: '2021 - Present',
+                        title: 'Flutter Developer',
+                        organization: 'Quantasis Private Limited',
+                        duration: 'Nov 2024 - Present',
                         description:
-                            'Lead developer for multiple mobile applications with complex animations and responsive designs.',
+                        'Developing comprehensive healthcare applications using Flutter with MVVM architecture. '
+                            'Implemented secure authentication, video consultation functionality with Jitsi Meet, '
+                            'and created robust family profile management systems. Improved user experience by 13%.',
                       ),
                       TimelineItem(
-                        title: 'Frontend Developer',
-                        organization: 'Web Designs Co.',
-                        duration: '2018 - 2021',
+                        title: 'Project Trainee',
+                        organization: 'Bhabha Atomic Research Centre (BARC)',
+                        duration: 'Sep 2023 - Apr 2024',
                         description:
-                            'Developed responsive web applications using React and modern JavaScript.',
-                      ),
-                      TimelineItem(
-                        title: 'Junior Developer',
-                        organization: 'Startup Hub',
-                        duration: '2016 - 2018',
-                        description:
-                            'Worked on various web projects using HTML, CSS, and JavaScript.',
+                        'Developed real-time object detection system using YOLOv8 for industrial environments. '
+                            'Achieved 80% accuracy in conveyor belt detection and reduced error margin by 15% '
+                            'through camera calibration integration.',
                       ),
                     ],
                   ),
@@ -287,25 +297,26 @@ class AboutSection extends StatelessWidget {
                     'Education',
                     [
                       TimelineItem(
-                        title: 'Master\'s in Computer Science',
-                        organization: 'Tech University',
-                        duration: '2014 - 2016',
+                        title: 'Bachelor of Engineering (B.E.)',
+                        organization: 'Shah and Anchor Kutchhi Engineering College',
+                        duration: '2020 - 2024',
                         description:
-                            'Specialized in User Interface Design and Web Technologies.',
+                        'Information Technology major with 7.6/9.0 GPA (92%). Relevant coursework included '
+                            'DBMS, OOP, Computer Networks, Data Mining and BI, AIDS, and Software Engineering.',
                       ),
                       TimelineItem(
-                        title: 'Bachelor\'s in Computer Science',
-                        organization: 'State University',
-                        duration: '2010 - 2014',
+                        title: 'Senior Secondary (Class XII)',
+                        organization: 'Ryan International School, Mumbai',
+                        duration: '2018 - 2020',
                         description:
-                            'Graduated with honors. Participated in various coding competitions.',
+                        'CBSE Board - Science stream. Focused on Mathematics and Computer Science.',
                       ),
                       TimelineItem(
-                        title: 'High School Diploma',
-                        organization: 'City High School',
-                        duration: '2006 - 2010',
+                        title: 'Secondary (Class X)',
+                        organization: 'Atomic Energy Central School-3',
+                        duration: '2010 - 2018',
                         description:
-                            'Focused on Mathematics and Computer Science.',
+                        'CBSE Board - Achieved strong foundation in Science and Mathematics.',
                       ),
                     ],
                   ),
