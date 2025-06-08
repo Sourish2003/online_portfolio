@@ -1,13 +1,13 @@
 class ImageConstants {
   // Profile images
-  static const String profileImage = "assets/images/profile_placeholder.png";
+  static const String profileImage = "assets/images/profile_image.jpg";
   static const String profileImageAlt =
       "assets/images/profile_alt_placeholder.png";
 
   // Project images
-  static const String project1 = "assets/images/project1_placeholder.jpeg";
+  static const String project1 = "assets/images/project1_placeholder.png";
   static const String project2 = "assets/images/ODS_project_animated_image.png";
-  static const String project3 = "assets/images/project3_placeholder.jpeg";
+  static const String project3 = "assets/images/project1_placeholder.png";
 
   // Background images
   static const String backgroundImage =

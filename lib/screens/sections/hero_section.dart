@@ -1,6 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:online_portfolio/animations/animated_reveal.dart';
+import 'package:online_portfolio/constants/imageconstants.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 import '../home_screen.dart';
@@ -128,7 +129,7 @@ class HeroSection extends StatelessWidget {
               ),
             ],
             image: const DecorationImage(
-              image: AssetImage('assets/images/profile_placeholder.png'),
+              image: AssetImage(ImageConstants.profileImage),
               fit: BoxFit.cover,
             ),
           ),
