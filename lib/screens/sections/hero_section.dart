@@ -82,7 +82,7 @@ class HeroSection extends StatelessWidget {
           flex: 1,
           child: Padding(
             padding: const EdgeInsets.only(right: 40.0),
-            child: _buildProfileImage(theme, 400.0),
+            child: _buildProfileImage(context, theme, isDesktop: true),
           ),
         ),
 
@@ -103,36 +103,42 @@ class HeroSection extends StatelessWidget {
         // Profile Image at the top for mobile
         Padding(
           padding: const EdgeInsets.only(bottom: 40.0),
-          child: _buildProfileImage(theme, 280.0),
+          child: _buildProfileImage(context, theme, isDesktop: false),
         ),
         _buildTextContent(context, theme, isMobile, isColumn: true),
       ],
     );
   }
 
-  Widget _buildProfileImage(ThemeData theme, double size) {
+  Widget _buildProfileImage(BuildContext context, ThemeData theme, {required bool isDesktop}) {
+    // Dynamic sizing based on screen width
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    // Calculate size based on screen dimensions
+    double size;
+    if (isDesktop) {
+      // For desktop, use percentage of viewport height or width (whichever is smaller)
+      size = (screenHeight * 0.45).clamp(300.0, 400.0);
+    } else {
+      // For mobile/tablet, scale based on screen width
+      if (screenWidth < 400) {
+        size = screenWidth * 0.65; // Smaller phones
+      } else if (screenWidth < 600) {
+        size = screenWidth * 0.55; // Larger phones
+      } else {
+        size = 280.0; // Tablets
+      }
+      size = size.clamp(180.0, 320.0); // Ensure reasonable bounds
+    }
+
     return AnimatedOpacity(
       duration: const Duration(seconds: 1),
       opacity: 1.0,
-      child: Transform.translate(
-        offset: const Offset(0, 0),
-        child: Container(
-          height: size,
-          width: size,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: theme.colorScheme.primary.withValues(alpha: 0.3),
-                blurRadius: 40.0,
-                spreadRadius: 10.0,
-              ),
-            ],
-            image: const DecorationImage(
-              image: AssetImage(ImageConstants.profileImage),
-              fit: BoxFit.cover,
-            ),
-          ),
+      child: Center(
+        child: ProfileImageWithEffects(
+          size: size,
+          theme: theme,
         ),
       ),
     );
@@ -232,6 +238,104 @@ class HeroSection extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+}
+
+class ProfileImageWithEffects extends StatefulWidget {
+  final double size;
+  final ThemeData theme;
+
+  const ProfileImageWithEffects({
+    super.key,
+    required this.size,
+    required this.theme,
+  });
+
+  @override
+  State<ProfileImageWithEffects> createState() => _ProfileImageWithEffectsState();
+}
+
+class _ProfileImageWithEffectsState extends State<ProfileImageWithEffects>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _pulseController;
+  late Animation<double> _pulseAnimation;
+  bool _isHovering = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _pulseController = AnimationController(
+      duration: const Duration(seconds: 3),
+      vsync: this,
+    );
+    _pulseAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _pulseController,
+      curve: Curves.easeInOut,
+    ));
+    _pulseController.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _pulseController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovering = true),
+      onExit: (_) => setState(() => _isHovering = false),
+      child: AnimatedBuilder(
+        animation: _pulseAnimation,
+        builder: (context, child) {
+          // Calculate dynamic shadow based on pulse animation
+          final shadowSpread = 10.0 + (_pulseAnimation.value * 5.0);
+          final shadowBlur = 40.0 + (_pulseAnimation.value * 10.0);
+
+          return AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            transform: Matrix4.identity()
+              ..scale(_isHovering ? 1.05 : 1.0),
+            child: Container(
+              height: widget.size,
+              width: widget.size,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: widget.theme.colorScheme.primary.withValues(
+                        alpha: 0.3 + (_pulseAnimation.value * 0.1)
+                    ),
+                    blurRadius: shadowBlur,
+                    spreadRadius: shadowSpread,
+                  ),
+                  if (_isHovering)
+                    BoxShadow(
+                      color: widget.theme.colorScheme.secondary.withValues(alpha: 0.2),
+                      blurRadius: 60.0,
+                      spreadRadius: 20.0,
+                    ),
+                ],
+              ),
+              child: ClipOval(
+                child: Image.asset(
+                  ImageConstants.profileImage,
+                  width: widget.size,
+                  height: widget.size,
+                  fit: BoxFit.cover,
+                  // Keep the focal point consistent
+                  alignment: const Alignment(0.0, -0.3), // Adjust this to position face correctly
+                ),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }
