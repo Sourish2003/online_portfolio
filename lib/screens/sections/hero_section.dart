@@ -51,7 +51,9 @@ class _SimpleParallaxState extends State<SimpleParallax> {
 }
 
 class HeroSection extends StatelessWidget {
-  const HeroSection({super.key});
+  final VoidCallback? onContactTap;
+
+  const HeroSection({super.key, this.onContactTap});
 
   @override
   Widget build(BuildContext context) {
@@ -225,7 +227,7 @@ class HeroSection extends StatelessWidget {
                 HeroButton(
                   title: 'Contact Me',
                   isPrimary: true,
-                  onTap: () {},
+                  onTap: onContactTap ?? () {},
                 ),
                 const SizedBox(width: 20),
                 HeroButton(

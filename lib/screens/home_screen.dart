@@ -219,7 +219,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   // Hero Section
                   SectionContainer(
                     key: _sectionKeys[0],
-                    child: const HeroSection(),
+                    child: HeroSection(
+                      onContactTap: () => _scrollToSection(3),
+                    ),
                   ),
 
                   // About Section
