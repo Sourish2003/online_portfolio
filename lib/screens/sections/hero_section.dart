@@ -233,7 +233,7 @@ class HeroSection extends StatelessWidget {
                 HeroButton(
                   title: 'View Resume',
                   isPrimary: false,
-                  onTap: () => launchURL('assets/resume/SOURISH_MERUGUMILLI_Flutter.pdf'),
+                  onTap: () => launchURL('/resume/SOURISH_MERUGUMILLI_Flutter.pdf'),
                 ),
               ],
             ),
