@@ -11,7 +11,7 @@ import 'sections/contact_section/view/contact_section.dart';
 import 'sections/hero_section.dart';
 import 'sections/projects_section.dart';
 
-void launchURL(String url) async {
+void launchURL(String url) async { 
   try {
     final Uri uri = Uri.parse(url);
     await launchUrl(uri);
