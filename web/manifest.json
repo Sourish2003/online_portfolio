@@ -1,11 +1,11 @@
 {
-    "name": "Portfolio",
-    "short_name": "Portfolio",
+    "name": "Sourish Merugumilli - Portfolio",
+    "short_name": "SM Portfolio",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "My Professional Portfolio",
+    "background_color": "#6750A4",
+    "theme_color": "#6750A4",
+    "description": "Sourish Merugumilli's Professional Portfolio",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

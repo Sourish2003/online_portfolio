@@ -46,3 +46,4 @@ windows/flutter/generated_plugin_registrant.h
 windows/flutter/generated_plugin_registrant.cc
 .firebase/hosting.YnVpbGRcd2Vi.cache
 /functions/node_modules
+node_modules/
