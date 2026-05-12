@@ -12,6 +12,7 @@
     }
   },
   "hosting": {
+    "site": "my-portfolio-d12e9",
     "public": "build/web",
     "ignore": [
       "firebase.json",
@@ -25,6 +26,24 @@
       }
     ],
     "headers": [
+      {
+        "source": "/sitemap.xml",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/xml"
+          }
+        ]
+      },
+      {
+        "source": "/robots.txt",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "text/plain"
+          }
+        ]
+      },
       {
         "source": "**/*.@(js|css|png|jpg|jpeg|gif|webp|svg|ttf|otf|woff|woff2)",
         "headers": [
