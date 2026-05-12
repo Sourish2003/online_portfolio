@@ -63,7 +63,7 @@ class _AnimatedContainerCardState extends State<AnimatedContainerCard> {
             curve: Curves.easeOutQuint,
             margin: widget.margin,
             transform: Matrix4.identity()
-              ..translate(0.0, _isHovering ? -6.0 : 0.0, 0.0),
+              ..translateByDouble(0.0, _isHovering ? -6.0 : 0.0, 0.0, 1.0),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(widget.borderRadius),
               child: BackdropFilter(

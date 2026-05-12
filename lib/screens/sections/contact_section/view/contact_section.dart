@@ -576,7 +576,7 @@ class _ContactSectionState extends State<ContactSection> {
   }
 
   Widget _buildSocialButton({
-    required IconData icon,
+    required FaIconData icon,
     required VoidCallback onTap,
   }) {
     final theme = Theme.of(context);

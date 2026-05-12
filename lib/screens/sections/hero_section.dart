@@ -43,7 +43,7 @@ class _SimpleParallaxState extends State<SimpleParallax> {
           ..setEntry(3, 2, 0.001)
           ..rotateX(_offset.dy)
           ..rotateY(-_offset.dx)
-          ..translate(_offset.dx * 15, _offset.dy * 15),
+          ..translateByDouble(_offset.dx * 15, _offset.dy * 15, 0.0, 1.0),
         child: widget.child,
       ),
     );
@@ -302,7 +302,7 @@ class _ProfileImageWithEffectsState extends State<ProfileImageWithEffects>
           return AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.identity()
-              ..scale(_isHovering ? 1.05 : 1.0),
+              ..scaleByDouble(_isHovering ? 1.05 : 1.0, _isHovering ? 1.05 : 1.0, 1.0, 1.0),
             child: Container(
               height: widget.size,
               width: widget.size,

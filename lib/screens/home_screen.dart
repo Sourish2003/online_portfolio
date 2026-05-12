@@ -413,7 +413,7 @@ class FooterSection extends StatelessWidget {
 }
 
 class SocialIcon extends StatefulWidget {
-  final IconData icon;
+  final FaIconData icon;
   final VoidCallback onTap;
   final bool isDarkMode;
 
